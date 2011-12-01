@@ -149,6 +149,7 @@
             covers = paper.set(),
             covers2 = paper.set(),
             total = Math.max.apply(Math, values),
+            minheight = opts.minheight || 0,
             stacktotal = [],
             multi = 0,
             colors = opts.colors || chartinst.colors,
@@ -195,7 +196,7 @@
             barvgutter = opts.vgutter == null ? 20 : opts.vgutter,
             stack = [],
             X = x + barhgutter,
-            Y = (height - 2 * barvgutter) / total;
+            Y = (height - minheight - 2 * barvgutter) / total;
 
         if (!opts.stretch) {
             barhgutter = Math.round(barhgutter);
@@ -208,7 +209,7 @@
             stack = [];
 
             for (var j = 0; j < (multi || 1); j++) {
-                var h = Math.round((multi ? values[j][i] : values[i]) * Y),
+                var h = Math.round((multi ? values[j][i] : values[i]) * Y + (multi ? (Math.round(values[j][i]) == 0 ? 0 : minheight) : (Math.round(values[i]) == 0 ? 0 : minheight))),
                     top = y + height - barvgutter - h,
                     bar = finger(Math.round(X + barwidth / 2), top + h, barwidth, h, true, type, null, paper).attr({ stroke: "none", fill: colors[multi ? j : i] });
 
